@@ -5,105 +5,105 @@ import user_avatar from './assets/user.png'
 import './App.css'
 
 
-    function Input({ messages, setMessages, bot }) {
-      const [input, setInput] = useState("");
+function Input({ messages, setMessages, bot }) {
+  const [input, setInput] = useState("");
 
-      function saveInput(event) {
-        setInput(event.target.value);
+  function saveInput(event) {
+    setInput(event.target.value);
+  }
+
+  function sendMessage() {
+    const updatedMessages = [
+      //before adding new message,
+      //create a copy of the current state
+      ...messages,
+      //then add the new message
+      {
+        message: input,
+        sender: "user",
+        id: crypto.randomUUID(),
+      }];
+    setMessages(updatedMessages);
+
+
+    const reply = bot.reply(input);
+    setMessages([
+      ...updatedMessages,
+      {
+        message: reply,
+        sender: "robot",
+        id: crypto.randomUUID(),
       }
-
-      function sendMessage() {
-        const updatedMessages = [
-          //before adding new message,
-          //create a copy of the current state
-          ...messages,
-          //then add the new message
-          {
-            message: input,
-            sender: "user",
-            id: crypto.randomUUID(),
-          }];
-        setMessages(updatedMessages);
+    ])
+    setInput("");
+  }
 
 
-        const reply = bot.reply(input);
-        setMessages([
-          ...updatedMessages,
-          {
-            message: reply,
-            sender: "robot",
-            id: crypto.randomUUID(),
+  return (
+    <div className="input-container">
+      <input type="text" placeholder="Type a message..." size="50"
+        onChange={saveInput}
+        value={input}
+        className="input"
+      />
+      <button onClick={sendMessage}
+        className="send-button"
+      >Send</button>
+    </div>
+  );
+}
+function Message({ message, sender }) {
+  // const message = props.message;
+  // const {sender} = props;
+  // if (sender === 'robot') {
+  //   return (
+  //     <div>
+  //       <img src="robot.png" alt="" height="50" width="50" />
+  //       {message}
+
+  //     </div>
+  //   );
+  // } 
+  return (
+    <div className={sender === "robot" ? "robot-message" : "user-message"}>
+      {/* same as if sender === "robot" then return robot image else return user image */}
+      {sender === "robot" && <img src={robot_avatar} alt="" height="50" width="50" />}
+      <div className="message-content">
+        {message}
+      </div>
+      {sender === "user" && <img src={user_avatar} alt="" height="50" width="50" />}
+    </div>
+  );
+}
+
+function Chat({ messages }) {
+  const chatContainerRef = useRef(null);
+  //React will run this function
+  // - after component is created
+  // - every time the component is updated
+  useEffect(() => {
+    const containerElem = chatContainerRef.current;
+    if (containerElem) {
+      containerElem.scrollTop = containerElem.scrollHeight;
+    }
+  }, [messages]);
+
+
+
+  return (
+    <div className="chat-container"
+      ref={chatContainerRef}>
+      {
+        messages.map(
+          (message) => {
+            return <Message message={message.message} sender={message.sender} key={message.id} />
           }
-        ])
-        setInput("");
+        )
       }
+    </div>
+  )
 
-
-      return (
-        <div className="input-container">
-          <input type="text" placeholder="Type a message..." size="50"
-            onChange={saveInput}
-            value={input}
-            className="input"
-          />
-          <button onClick={sendMessage}
-            className="send-button"
-          >Send</button>
-        </div>
-      );
-    }
-    function Message({ message, sender }) {
-      // const message = props.message;
-      // const {sender} = props;
-      // if (sender === 'robot') {
-      //   return (
-      //     <div>
-      //       <img src="robot.png" alt="" height="50" width="50" />
-      //       {message}
-
-      //     </div>
-      //   );
-      // } 
-      return (
-        <div className={sender === "robot" ? "robot-message" : "user-message"}>
-          {/* same as if sender === "robot" then return robot image else return user image */}
-          {sender === "robot" && <img src={robot_avatar} alt="" height="50" width="50" />}
-          <div className="message-content">
-            {message}
-          </div>
-          {sender === "user" && <img src={user_avatar} alt="" height="50" width="50" />}
-        </div>
-      );
-    }
-
-    function Chat({ messages }) {
-      const chatContainerRef = useRef(null);
-      //React will run this function
-      // - after component is created
-      // - every time the component is updated
-      useEffect(() => {
-        const containerElem = chatContainerRef.current;
-        if (containerElem) {
-          containerElem.scrollTop = containerElem.scrollHeight;
-        }
-      }, [messages]);
-
-
-
-      return (
-        <div className="chat-container"
-        ref={chatContainerRef}>
-          {
-            messages.map(
-              (message) => {
-                return <Message message={message.message} sender={message.sender} key={message.id} />
-              }
-            )
-          }
-        </div>
-      )
-
-    }
+}
 
 function App() {
   const [messages, setMessages] = useState([
