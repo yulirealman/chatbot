@@ -1,4 +1,5 @@
 import { useState} from 'react'
+import "./css/Input.css";
 export function Input({ messages, setMessages, bot }) {
   const [input, setInput] = useState("");
 

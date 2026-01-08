@@ -1,5 +1,6 @@
 import robot_avatar from '@/assets/robot.png'
 import user_avatar from '@/assets/user.png'
+import "./css/Message.css";
 export function Message({ message, sender }) {
   // const message = props.message;
   // const {sender} = props;

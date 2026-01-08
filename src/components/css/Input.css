@@ -1,0 +1,27 @@
+.send-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  /* text-align: center; */
+  font-size: 15px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 15px;
+  margin-bottom: 60px;
+}
+
+.input {
+  padding: 7px 20px;
+  /* text-align: center; */
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 15px;
+  flex-grow: 1;
+  margin-bottom: 60px;
+
+}
+
+.input-container {
+  display: flex;
+}

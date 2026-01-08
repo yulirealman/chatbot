@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Message } from "./Message.jsx";
+
+import "./css/Chat.css";
 export function Chat({ messages }) {
   const chatContainerRef = useRef(null);
   //React will run this function
